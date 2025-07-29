@@ -29,8 +29,8 @@ class DotArray implements \ArrayAccess
 
     public static function splitKey($key): array
     {
-        $splitted = explode(".", $key); // Splits keys by . into an array
-        $filtered = array_filter($splitted, function ($item) {
+        $split = explode(".", $key); // Splits keys by . into an array
+        $filtered = array_filter($split, function ($item) {
             return $item != "";
         }); // Gets rid of empty keys ("")
         $reindexed = array_values($filtered); //In case where filtering makes array start from >0
