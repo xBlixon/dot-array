@@ -108,4 +108,41 @@ class DotArrayTest extends TestCase
         // 0 is arbitrary. Most important is the key.
         $arr[$key] = 0;
     }
+
+    public static function gettingProvider(): array
+    {
+        return [
+            [
+                ['foo' => 'bar'],
+                'foo',
+                'bar'
+            ],
+            [
+                [
+                    'foo' => [
+                        'bar' => 'baz'
+                    ]
+                ],
+                'foo.bar',
+                'baz'
+            ],
+            [
+                ['foo' => 100],
+                '.foo',
+                100
+            ],
+            [
+                ['foo' => true],
+                'foo.',
+                true
+            ],
+        ];
+    }
+
+    #[DataProvider('gettingProvider')]
+    public function testGetting(array $array, string $key, mixed $expected): void
+    {
+        $arr = new DotArray($array);
+        $this->assertEquals($expected, $arr[$key]);
+    }
 }
