@@ -12,6 +12,7 @@
          failOnRisky="true"
          failOnWarning="true"
          testdox="true"
+         testdoxSummary="true"
          colors="true"
          >
     <testsuites>
