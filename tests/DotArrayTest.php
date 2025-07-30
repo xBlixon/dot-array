@@ -145,4 +145,22 @@ class DotArrayTest extends TestCase
         $arr = new DotArray($array);
         $this->assertEquals($expected, $arr[$key]);
     }
+
+    public static function illegalGettingProvider(): array
+    {
+        return [
+            [''],
+            ['foo.baz'],
+            [true],
+            [0],
+        ];
+    }
+
+    #[DataProvider('illegalGettingProvider')]
+    public function testIllegalGetting(mixed $key): void
+    {
+        $this->expectException(IllegalAccessException::class);
+        $arr = new DotArray(['foo' => 'bar']);
+        $arr[$key];
+    }
 }
