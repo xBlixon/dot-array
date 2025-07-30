@@ -25,7 +25,7 @@ class DotArray implements \ArrayAccess
         $array = &$this->array;
 
         foreach ($keys as $key) {
-            if (!isset($key, $array)) {
+            if (!isset($array[$key])) {
                 return false;
             }
             $array = &$array[$key];
