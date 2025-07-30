@@ -196,4 +196,42 @@ class DotArrayTest extends TestCase
         );
         $this->assertEquals($expected, isset($arr[$key]));
     }
+
+    public static function unsettingProvider(): array
+    {
+        return [
+            [
+                ['foo' => 'bar'],
+                'foo',
+                []
+            ],
+            [
+                [
+                    'foo' => [
+                        'bar' => 'baz'
+                    ]
+                ],
+                'foo',
+                []
+            ],
+            [
+                [
+                    'foo' => [
+                        'bar' => 'baz',
+                        'abc' => 'def'
+                    ]
+                ],
+                'foo.bar',
+                ['foo' => ['abc' => 'def']]
+            ]
+        ];
+    }
+
+    #[DataProvider('unsettingProvider')]
+    public function testUnsetting(array $array, string $key, array $expected): void
+    {
+        $arr = new DotArray($array);
+        unset($arr[$key]);
+        $this->assertEquals($expected, $arr->getRawArray());
+    }
 }
