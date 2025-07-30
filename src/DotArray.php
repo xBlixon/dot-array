@@ -53,6 +53,7 @@ class DotArray implements \ArrayAccess
                 );
             }
         }
+        return null;
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
