@@ -163,4 +163,37 @@ class DotArrayTest extends TestCase
         $arr = new DotArray(['foo' => 'bar']);
         $arr[$key];
     }
+
+    public static function existenceProvider(): array
+    {
+        return [
+            ['foo', true],
+            ['bar', true],
+            ['bar.baz', true],
+            ['bar.abc', true],
+            ['bar.abc.key', true],
+
+            ['empty', false],
+            ['bar.blah', false],
+            ['bar.def', false],
+            ['bar.abc.yek', false],
+        ];
+    }
+
+    #[DataProvider('existenceProvider')]
+    public function testExistence(string $key, bool $expected): void
+    {
+        $arr = new DotArray(
+            [
+                'foo' => 'bar',
+                'bar' => [
+                    'baz' => 100,
+                    'abc' => [
+                        'key' => 'value'
+                    ]
+                ]
+            ]
+        );
+        $this->assertEquals($expected, isset($arr[$key]));
+    }
 }
