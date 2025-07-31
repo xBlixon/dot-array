@@ -104,6 +104,15 @@ class DotArray implements \ArrayAccess
             return $item != "";
         }); // Gets rid of empty keys ("")
         $reindexed = array_values($filtered); //In case where filtering makes array start from >0
+
+        if (count($reindexed) == 0)
+        {
+            throw new IllegalAccessException(
+                "Illegal key. Parsing original key has been reduced to
+                0 sub-keys. Example: '.' Passed: $key"
+            );
+        }
+
         return $reindexed;
     }
 }
