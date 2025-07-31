@@ -11,6 +11,17 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DotArray::class)]
 class DotArrayTest extends TestCase
 {
+    public static function illegalKeysProvider(): array
+    {
+        return [
+            [''],
+            ['.'],
+            [100],
+            [null],
+            [true],
+        ];
+    }
+
     public static function keyProvider(): array
     {
         return [
@@ -19,9 +30,6 @@ class DotArrayTest extends TestCase
             ['foo..', ['foo']],
             ['.bar', ['bar']],
             ['.bar.', ['bar']],
-            ['.', []],
-            ['..', []],
-            ['', []]
         ];
     }
 
@@ -30,6 +38,22 @@ class DotArrayTest extends TestCase
     {
         $result = DotArray::splitKey($input);
         $this->assertEquals($expected, $result);
+    }
+
+    public static function illegalKeyProvider(): array
+    {
+        return [
+            [''],
+            ['.'],
+            ['..'],
+        ];
+    }
+
+    #[DataProvider('illegalKeyProvider')]
+    public function testIllegalSplittingKey(string $input): void
+    {
+        $this->expectException(IllegalAccessException::class);
+        DotArray::splitKey($input);
     }
 
     public static function settingProvider(): array
@@ -91,16 +115,7 @@ class DotArrayTest extends TestCase
         $this->assertEquals($expected, $arr->getRawArray());
     }
 
-    public static function illegalSettingProvider(): array
-    {
-        return [
-            [''],
-            [100],
-            [null]
-        ];
-    }
-
-    #[DataProvider('illegalSettingProvider')]
+    #[DataProvider('illegalKeysProvider')]
     public function testIllegalSetting(mixed $key): void
     {
         $this->expectException(IllegalAccessException::class);
@@ -150,6 +165,7 @@ class DotArrayTest extends TestCase
     {
         return [
             [''],
+            ['.'],
             ['foo.baz'],
             [true],
             [0],
@@ -197,6 +213,14 @@ class DotArrayTest extends TestCase
         $this->assertEquals($expected, isset($arr[$key]));
     }
 
+    #[DataProvider('illegalKeysProvider')]
+    public function testIllegalExistence(mixed $key): void
+    {
+        $this->expectException(IllegalAccessException::class);
+        $arr = new DotArray([]);
+        isset($arr[$key]);
+    }
+
     public static function unsettingProvider(): array
     {
         return [
@@ -233,5 +257,13 @@ class DotArrayTest extends TestCase
         $arr = new DotArray($array);
         unset($arr[$key]);
         $this->assertEquals($expected, $arr->getRawArray());
+    }
+
+    #[DataProvider('illegalKeysProvider')]
+    public function testIllegalUnsetting(mixed $key): void
+    {
+        $this->expectException(IllegalAccessException::class);
+        $arr = new DotArray(['foo' => 'bar']);
+        unset($arr[$key]);
     }
 }
