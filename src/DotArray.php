@@ -109,7 +109,7 @@ class DotArray implements \ArrayAccess
         {
             throw new IllegalAccessException(
                 "Illegal key. Parsing original key has been reduced to
-                0 sub-keys. Example: '.' Passed: $key"
+                0 sub-keys. Example: '.' Passed: '$key'"
             );
         }
 
