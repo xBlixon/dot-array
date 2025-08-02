@@ -16,5 +16,7 @@
             "name": "Xawier Słupik"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=8.3"
+    }
 }
